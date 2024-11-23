@@ -1,18 +1,18 @@
-import { Node } from "@babel/traverse";
-import { JavascriptParser } from "./context/language/javascript-parser";
-import { ChatCompletionMessageParam } from "groq-sdk/resources/chat/completions";
+import { Node } from '@babel/traverse';
+import { JavascriptParser } from './context/language/javascript-parser';
+import { ChatCompletionMessageParam } from 'groq-sdk/resources/chat/completions';
 
 export interface PRFile {
   sha: string;
   filename: string;
   status:
-    | "added"
-    | "removed"
-    | "renamed"
-    | "changed"
-    | "modified"
-    | "copied"
-    | "unchanged";
+    | 'added'
+    | 'removed'
+    | 'renamed'
+    | 'changed'
+    | 'modified'
+    | 'copied'
+    | 'unchanged';
   additions: number;
   deletions: number;
   changes: number;
@@ -86,7 +86,7 @@ export const sleep = async (ms: number) => {
 
 export const processGitFilepath = (filepath: string) => {
   // Remove the leading '/' if it exists
-  return filepath.startsWith("/") ? filepath.slice(1) : filepath;
+  return filepath.startsWith('/') ? filepath.slice(1) : filepath;
 };
 
 export interface EnclosingContext {
@@ -103,24 +103,24 @@ export interface AbstractParser {
 }
 
 const EXTENSIONS_TO_PARSERS: Map<string, AbstractParser> = new Map([
-  ["ts", new JavascriptParser()],
-  ["tsx", new JavascriptParser()],
-  ["js", new JavascriptParser()],
-  ["jsx", new JavascriptParser()],
+  ['ts', new JavascriptParser()],
+  ['tsx', new JavascriptParser()],
+  ['js', new JavascriptParser()],
+  ['jsx', new JavascriptParser()],
 ]);
 
 export const getParserForExtension = (filename: string) => {
-  const fileExtension = filename.split(".").pop().toLowerCase();
+  const fileExtension = filename.split('.').pop().toLowerCase();
   return EXTENSIONS_TO_PARSERS.get(fileExtension) || null;
 };
 
 export const assignLineNumbers = (contents: string): string => {
-  const lines = contents.split("\n");
+  const lines = contents.split('\n');
   let lineNumber = 1;
   const linesWithNumbers = lines.map((line) => {
     const numberedLine = `${lineNumber}: ${line}`;
     lineNumber++;
     return numberedLine;
   });
-  return linesWithNumbers.join("\n");
+  return linesWithNumbers.join('\n');
 };
